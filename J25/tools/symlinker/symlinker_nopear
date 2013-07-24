@@ -1,0 +1,98 @@
+#!/usr/bin/php -q
+
+<?php
+/**
+ * @version     $Id: symlinker_nopear 9 2011-08-18 22:04:47Z carless $
+ * @category	Koowa
+ * @package     Koowa_Tools
+ * @subpackage  Symlinker
+ * @copyright   Copyright (C) 2010 Nooku. All rights reserved.
+ * @license     GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+ * @link        http://nooku.assembla.com/wiki/show/nooku-tools/Symlinker
+ */
+
+
+/**
+ * Usage instructions:
+ * Run symlinker_nopear from the commandline. Provide full paths to the source and 
+ * target dirs when prompted.
+ */
+
+// Read input
+print("The source dir (usually from an IDE workspace): ");
+$source = realpath(trim(KSymlinker::readInput()));
+
+print("The target dir (usually where a joomla installation resides): ");
+$target = realpath(trim(KSymlinker::readInput()));
+
+// Make symlinks
+if(file_exists($source)) 
+{
+	$it = new KSymlinker($source, $target);
+	while($it->valid()) {
+		$it->next();
+	}
+} else {
+    die('Error: ' .$source. ' does not exist');
+}
+
+class KSymlinker extends RecursiveIteratorIterator
+{
+	protected $_srcdir;
+	protected $_tgtdir;
+	
+	public function __construct($srcdir, $tgtdir) 
+	{
+		$this->_srcdir = $srcdir;
+		$this->_tgtdir = $tgtdir;
+				
+		parent::__construct(new RecursiveDirectoryIterator($this->_srcdir));
+	}
+	
+	public function callHasChildren() 
+	{							
+		$filename = $this->getFilename();
+		if($filename[0] == '.') {
+			return false;
+		}
+				
+		$src = $this->key();
+				
+		$tgt = str_replace($this->_srcdir, '', $src);		
+		$tgt = str_replace('/site', '', $tgt);
+  		$tgt = $this->_tgtdir.$tgt;
+  		
+  		if(is_link($tgt)) {
+        	unlink($tgt);
+        }
+  		  		  		
+  		if(!is_dir($tgt)) {
+  			$this->createLink($src, $tgt); 		
+  			return false;
+  	  	}
+  	  	
+		return parent::callHasChildren();
+	}
+	
+	public function createLink($src, $tgt) 
+	{  		 
+        if(!file_exists($tgt)) 
+		{
+          	exec("ln -sf $src $tgt");
+			echo $src.PHP_EOL."\t--> $tgt".PHP_EOL;
+		}
+	}
+    
+    /**
+     * Read input from stdin
+     *
+     * @link http://www.phpbuilder.com/columns/darrell20000319.php3?page=4
+     */
+    static public function readInput() {
+        $fp     = fopen("/dev/stdin", "r");
+        $input  = trim(fgets($fp, 255));
+        fclose($fp);
+    
+        return $input;
+    }
+}

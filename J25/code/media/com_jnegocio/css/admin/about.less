@@ -1,0 +1,140 @@
+//
+// About
+// --------------------------------------------------
+
+.jec_about {
+	display:block;
+	overflow:hidden;
+	float:none;
+	width: 100%;
+	list-style: none outside none; 
+	margin: 0; 
+	padding: 0;
+	
+	> li {
+		display:block;
+		overflow:hidden;
+		float:none;
+		margin: 0; 
+		padding: 0;
+		font-family: @baseFontFamily;
+		font-size: 13px;
+		line-height: 16px;
+		*line-height: 16px;		
+		
+		label {
+			font-weight:bold;
+			margin: 0 !important; 
+			padding: 0;
+		}
+	}
+}
+
+/* Changelog styling */
+.changelog {
+	font-size: x-small;
+	padding: 0px;
+	border-top: 1px solid rgba(100,100,100,0.1);
+	border-bottom: 1px solid rgba(100,100,100,0.1);
+	
+	-webkit-transition: opacity 1s;
+	-moz-transition: opacity 1s;
+	-o-transition: opacity 1s;
+	transition: opacity 1s;	
+}
+
+.changelog:first-child {
+	padding-top: 0;
+	border-top-width: 0;
+}
+
+.changelog:last-child {
+	padding-bottom: 0;
+	border-bottom-width: 0;
+}
+
+.changelog ul {
+	position: relative;
+}
+
+.changelog ul [class] {
+	text-indent:50px;
+	list-style: none;
+}
+
+:hover > .changelog:not(:hover) {
+	opacity: 0.5;
+}
+
+.changelog ul [rel]::before {
+	-moz-border-radius: 3px;
+	-moz-box-shadow: gray 0px 0px 5px;
+	-webkit-border-radius: 3px;
+	-webkit-box-shadow: lightgray 0px 0px 5px;
+	background-color: rgba(20,20,20,0.5);
+	background-image: -moz-linear-gradient(top, bottom, from(rgba(255,255,255,0.5)), to(rgba(90,90,90,0.0)));
+	background-image: -webkit-gradient(
+							linear, 
+							left top, left bottom, 
+							from(rgba(255,255,255,0.5)), 
+							to(rgba(90,90,90,0.0)),
+							color-stop(0.4, rgba(255,255,255,0.3)),
+							color-stop(0.8, rgba(255,255,255,0.1)),
+							color-stop(0.8, rgba(90,90,90,0.0)));
+	border: 1px solid gray;
+	color: rgba(255,255,255,0.65);
+	content: attr(class);
+	display: inline-block;
+	font-size: xx-small;
+	left: 20px;
+	max-width: 50px;
+	padding: 0.3em 0.5em 0.2em 0.5em;
+	position: absolute;
+	text-indent: 0px;
+	text-shadow: rgba(0,0,0,0.2) 0px -1px 0px;
+	text-transform: uppercase;
+}
+
+.changelog ul [rel][title]:hover::before {
+	content: attr(title);
+	max-width: 100%;
+}
+
+.changelog ul [rel]::after {
+	content: '.';
+	font-size: xx-small;
+	color: transparent;
+	display: block;
+}
+/* Colors */
+/* We don't want to see the log type */
+.changelog ul [rel="log"]::before {
+	display: none;
+}
+
+:hover > .changelog ul [rel="locale"]::before {
+	background-color: #FF7A23;
+	border-color: #FF7A23;
+}
+
+:hover > .changelog ul [rel="new"]::before {
+	background-color: #C30A4D;
+	border-color: #C30A4D;
+}
+
+:hover > .changelog ul [rel="ui"]::before {
+	background-color: #2C111D;
+	border-color: #2C111D;
+}
+
+:hover > .changelog ul [rel="upgrade"]::before {
+	background-color: #165B60;
+	border-color: #165B60;
+}
+
+:hover > .changelog ul [rel="bugfix"]::before {
+	background-color: #FFD351;
+	border-color: #FFD351;
+	color: rgba(100,0,0,0.65);
+	text-shadow: rgba(255,255,255,0.9) 0px 1px 0px;
+}

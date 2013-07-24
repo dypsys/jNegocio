@@ -1,0 +1,22 @@
+Nooku Symlinker
+---------------
+
+Make symlinks for Joomla extensions. This very useful to separate your Joomla 
+installation from your extension project, but connect them using symlinks. That 
+way you don't have to copy changes back and forth.
+
+Works on *nix, OSX. For Windows Vista+, see README_win
+
+
+Installation:
+
+Put the symlinker bash script somewhere in your operating system's include path. 
+
+Usage:
+
+  symlinker <SOURCE> <TARGET>
+
+Arguments:
+  SOURCE  The source dir (usually from an IDE workspace containing the extension)
+  TARGET  the target dir (usually where a Joomla installation resides)
+

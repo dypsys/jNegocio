@@ -1,4 +1,4 @@
 jNegocio
 ========
 
-Componente de ecommerce para joomla
+Componente de ecommerce para joomla...

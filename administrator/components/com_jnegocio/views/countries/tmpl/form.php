@@ -61,7 +61,7 @@ Joomla.submitbutton = function(task)
                 <fieldset class="form-vertical">
                     <div class="control-group">
                         <div class="control-label">
-                            <label id="country_id-lbl" for="country_id" class="hasTooltip" title="<?= @JText::_('COM_JNEGOCIO_FIELD_ID_DESC'); ?>"><?= @JText::_('COM_JNEGOCIO_FIELD_ID_LABEL'); ?></label>
+                            <label id="<?php print $tbl_key;?>-lbl" for="<?php print $tbl_key;?>" class="hasTooltip" title="<?= @JText::_('COM_JNEGOCIO_FIELD_ID_DESC'); ?>"><?= @JText::_('COM_JNEGOCIO_FIELD_ID_LABEL'); ?></label>
                         </div>
                         <div class="controls">
                             <input type="text" readonly="readonly" class="readonly" value="<?= @$this->row->$tbl_key; ?>" id="<?= @$tbl_key;?>" name="jform[<?= @$tbl_key;?>]">

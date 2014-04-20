@@ -40,4 +40,34 @@ class jFWTable extends JTable {
         }
         return $lreturn;
     }
+
+    /**
+     * Generic save function
+     *
+     * @access	public
+     * @returns TRUE if completely successful, FALSE if partially or not successful
+     */
+    function guardar() {
+        if (!$this->check()) {
+            return false;
+        }
+
+        if (!$this->store()) {
+            return false;
+        }
+
+        if (!$this->checkin()) {
+            $db = $this->getDBO();
+            $this->setError($db->stderr());
+            return false;
+        }
+
+        $this->reorder();
+        $this->setError('');
+
+        // TODO Move ALL onAfterSave plugin events here as opposed to in the controllers, duh
+        // $dispatcher = JDispatcher::getInstance();
+        // $dispatcher->trigger( 'onAfterSave'.$this->get('_suffix'), array( $this ) );
+        return true;
+    }
 }

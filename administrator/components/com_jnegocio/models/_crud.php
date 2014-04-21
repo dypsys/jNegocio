@@ -31,6 +31,36 @@ class jFWModelCRUD extends jFWModel {
     }
 
     /**
+     * Method to (un)publish a category
+     *
+     *
+     * @param   array   $cid
+     * @param   int     $publish
+     * @return  boolean True on success
+     */
+    function publish($cid = array(), $publish = 1) {
+        $user = JFactory::getUser();
+
+        if (count($cid)) {
+            $cids = implode(',', $cid);
+
+            $query = 'UPDATE ' . $this->getTable()->getTableName()
+                . ' SET published = ' . (int) $publish
+                . ' WHERE ' . $this->getTable()->getKeyName() . ' IN (' . $cids . ')'
+                . ' AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get('id') . ' ) )'
+            ;
+            // echo "query:".$query."<br/>";
+            $this->getDbo()->setQuery($query);
+            if (!$this->getDbo()->query()) {
+                $this->setError($this->getDbo()->getErrorMsg());
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
      * Tests if table is checked out
      *
      * @access	public

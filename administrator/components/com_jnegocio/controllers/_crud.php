@@ -180,4 +180,84 @@ class jFWControllerCRUD extends jFWController
         // Render view.
         echo $view->render();
     }
+
+    /**
+     * Logica para publicar un elemento
+     *
+     * @access public
+     * @return void
+     */
+    public function publish() {
+        // Check for request forgeries
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        $app        = JFactory::getApplication();
+        $tmpl       = $this->input->getCmd('tmpl', 'index');
+        $viewName   = $this->input->getWord('view', 'dashboard');
+        $cid        = $this->input->get('cid', array(), 'array');
+
+        if (!is_array($cid) || count($cid) < 1) {
+            $this->messagetype = 'error';
+            $this->message = JText::_('COM_JNEGOCIO_SELECT_ITEM_TO_PUBLISH');
+        } else {
+            $model  = $this->_getModel($viewName);
+
+            if (!$model->publish($cid, 1)) {
+                $this->messagetype = 'error';
+                $this->message = JText::_('COM_JNEGOCIO_ERROR'). " " .$model->getError();
+            } else {
+                $total = count($cid);
+
+                $this->messagetype = 'message';
+                $this->message = JText::sprintf('COM_JNEGOCIO_SELECTED_ITEMS_PUBLISED', $total);
+            }
+        }
+
+        $redirect = 'index.php?option=' . jFWBase::getComponentName() . '&view=' . $viewName;
+        if ($tmpl) {
+            $redirect .= '&tmpl=' . $tmpl;
+        }
+        $redirect = JRoute::_($redirect, false);
+        $this->Redirect($redirect, $this->message, $this->messagetype);
+    }
+
+    /**
+     * Logica para despublicar un elemento
+     *
+     * @access public
+     * @return void
+     */
+    public function unpublish() {
+        // Check for request forgeries
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        $app        = JFactory::getApplication();
+        $tmpl       = $this->input->getCmd('tmpl', 'index');
+        $viewName   = $this->input->getWord('view', 'dashboard');
+        $cid        = $this->input->get('cid', array(), 'array');
+
+        if (!is_array($cid) || count($cid) < 1) {
+            $this->messagetype = 'error';
+            $this->message = JText::_('COM_JNEGOCIO_SELECT_ITEM_TO_UNPUBLISH');
+        } else {
+            $model  = $this->_getModel($viewName);
+
+            if (!$model->publish($cid, 0)) {
+                $this->messagetype = 'error';
+                $this->message = JText::_('COM_JNEGOCIO_ERROR'). " " .$model->getError();
+            } else {
+                $total = count($cid);
+
+                $this->messagetype = 'message';
+                $this->message = JText::sprintf('COM_JNEGOCIO_SELECTED_ITEMS_UNPUBLISED', $total);
+            }
+        }
+
+        $redirect = 'index.php?option=' . jFWBase::getComponentName() . '&view=' . $viewName;
+        if ($tmpl) {
+            $redirect .= '&tmpl=' . $tmpl;
+        }
+        $redirect = JRoute::_($redirect, false);
+        $this->Redirect($redirect, $this->message, $this->messagetype);
+    }
 }

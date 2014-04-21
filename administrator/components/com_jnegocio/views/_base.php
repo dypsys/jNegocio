@@ -60,6 +60,8 @@ class jFWView extends JViewHtml
             $paths->insert(JPATH_THEMES . '/' . $app->getTemplate() . '/html/' . jFWBase::getComponentName() . '/' . $this->getName(), 2);
         }
 
+        $this->config 	= fwConfig::getInstance();
+
         parent::__construct($model, $paths);
     }
 
